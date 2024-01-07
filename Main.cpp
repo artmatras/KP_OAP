@@ -257,10 +257,15 @@ int add_usbs(usbs_t* usbs)
     for (int i = usbs->count; i < usbs->count + count; ++i)
     {
         usbs->arr[i] = read_usb_from_console();
-        printf("\nUSB-накопитель успешно добавлен\n");
+		printf("\n\nUSB-накопитель:\n");
+		printf("---------------------------------\n");
+		display_usb_in_console(usbs->arr+i);
+		printf("---------------------------------\n");
+		printf("Успешно добавлен в базу данных\n\n");
     }
 
     usbs->count += count;
+
 
     return ERR_FINE;
 }
@@ -515,18 +520,25 @@ int search_usbs_by_type(usbs_t* usbs)
 
     get_usb_type(stdin, type, "Введите тип USB в формате 'USB ЧИСЛО.ЧИСЛО'", MAX_USB_PARAM_LEN);
 
-    printf("\n");
+    printf("---------------------------------\n");
 
     for (int i = 0; i < usbs->count; ++i)
         if (!strcmp(usbs->arr[i].type, type))
         {
             display_usb_in_console(usbs->arr + i);
+			printf("---------------------------------\n");
             count++;
         }
 
     if (count == 0)
-        printf("USB-накопителей с таким типом нет\n");
-
+        printf("USB-накопителей с таким типом нет\n---------------------------------\n");
+	else if (count > 9 && count < 21) 
+		 printf("Найдено %d накопителей, удовлетворяющих типу %s \n",count,type);
+	else if (count%10 == 1)
+		printf("Найден %d накопитель, удовлетворяющий типу %s \n",count,type);
+	else if (count%10 > 1 && count%10 < 5)
+		printf("Найдено %d накопителя, удовлетворяющих типу %s \n",count,type);
+	else printf("Найдено %d накопителей, удовлетворяющих типу %s \n",count,type);
     return ERR_FINE;
 }
 
@@ -555,18 +567,25 @@ int search_usbs_by_brand(usbs_t* usbs)
 
     get_usb_brand(stdin, brand, "Введите бренд USB", MAX_USB_PARAM_LEN);
 
-    printf("\n");
+    printf("---------------------------------\n");
 
     for (int i = 0; i < usbs->count; ++i)
         if (!strcmp(usbs->arr[i].brand, brand))
         {
             display_usb_in_console(usbs->arr + i);
+			printf("---------------------------------\n");
             count++;
         }
 
     if (count == 0)
-        printf("USB-накопителей данного бренда нет\n");
-
+        printf("USB-накопителей данного бренда нет\n---------------------------------\n");
+	else if (count > 9 && count < 21) 
+		 printf("Найдено %d накопителей бренда %s \n",count,brand);
+	else if (count%10 == 1)
+		printf("Найден %d накопитель бренда %s \n",count,brand);
+	else if (count%10 > 1 && count%10 < 5)
+		printf("Найдено %d накопителя бренда %s \n",count,brand);
+	else printf("Найдено %d накопителей бренда %s \n",count,brand);
     return ERR_FINE;
 }
 /*
@@ -593,18 +612,24 @@ int search_usbs_by_сapacity(usbs_t* usbs)
 
     get_usb_storage(stdin, &storage, "Введите емкость", 1, INT_MAX, MAX_USB_PARAM_LEN);
 
-    printf("\n");
+    printf("---------------------------------\n");
 
     for (int i = 0; i < usbs->count; ++i)
         if (usbs->arr[i].capacity == storage)
         {
             display_usb_in_console(usbs->arr + i);
+			printf("---------------------------------\n");
             count++;
         }
 
     if (count == 0)
-        printf("USB-накопителей с такой емкостью нет\n");
-
+        printf("USB-накопителей с такой емкостью нет\n---------------------------------\n");
+	else if (count > 9 && count < 21) 
+		 printf("Найдено %d накопителей с данной емокстью \n",count);
+	else if (count%10 == 1)
+		printf("Найден %d накопитель с данной емкостью \n",count);
+	else if (count%10 > 1 && count%10 < 5)
+		printf("Найдено %d накопителя с данной емкостью\n",count);
     return ERR_FINE;
 }
 
@@ -762,19 +787,18 @@ int main()
                 search_usbs_by_сapacity(&usbs);
             else if (option == 7)
                 search_usbs_by_type(&usbs);
-	    else if (option == 8)
-		search_usbs_by_brand(&usbs);
+			else if (option == 8)
+				search_usbs_by_brand(&usbs);
             else if (option == 9)
                 sort_by_capacity_and_display_usbs(&usbs);
-	    else if (option == 10)
+			else if (option == 10)
                 clear_usbs(&usbs);
 			
-	    else
-		printf("Некорректный ввод");
+			else
+				printf("Некорректный ввод");
             printf("\n");
         }
     }
 
     return ERR_FINE;
 }
-
